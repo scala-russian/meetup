@@ -1,0 +1,121 @@
+<html>
+
+<head>
+    <title>Scala Meetup</title>
+    <style type="text/css">
+        .tabButton {
+            -moz-box-shadow: inset 0 1px 0 0 #f29c93;
+            -webkit-box-shadow: inset 0 1px 0 0 #f29c93;
+            box-shadow: inset 0 1px 0 0 #f29c93;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fe1a00), color-stop(1, #ce0100));
+            background: -moz-linear-gradient(top, #fe1a00 5%, #ce0100 100%);
+            background: -webkit-linear-gradient(top, #fe1a00 5%, #ce0100 100%);
+            background: -o-linear-gradient(top, #fe1a00 5%, #ce0100 100%);
+            background: -ms-linear-gradient(top, #fe1a00 5%, #ce0100 100%);
+            background: linear-gradient(to bottom, #fe1a00 5%, #ce0100 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fe1a00', endColorstr='#ce0100', GradientType=0);
+            background-color: #fe1a00;
+            -moz-border-radius: 6px;
+            -webkit-border-radius: 6px;
+            border-radius: 6px;
+            border: 1px solid #d83526;
+            display: inline-block;
+            cursor: pointer;
+            color: #ffffff;
+            font-family: Arial,serif;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 6px 24px;
+            text-decoration: none;
+            text-shadow: 0 1px 0 #b23e35;
+        }
+
+        .tabButton:hover {
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ce0100), color-stop(1, #fe1a00));
+            background: -moz-linear-gradient(top, #ce0100 5%, #fe1a00 100%);
+            background: -webkit-linear-gradient(top, #ce0100 5%, #fe1a00 100%);
+            background: -o-linear-gradient(top, #ce0100 5%, #fe1a00 100%);
+            background: -ms-linear-gradient(top, #ce0100 5%, #fe1a00 100%);
+            background: linear-gradient(to bottom, #ce0100 5%, #fe1a00 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ce0100', endColorstr='#fe1a00', GradientType=0);
+            background-color: #ce0100;
+        }
+
+        .tabButton:active {
+            position: relative;
+            top: 1px;
+        }
+    </style>
+    <script>
+        function openTab(tabName) {
+            var i;
+            var x = document.getElementsByClassName("tab");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            document.getElementById(tabName).style.display = "block";
+        }
+    </script>
+</head>
+
+<body>
+    <div>
+        <button class="tabButton" onclick="openTab('visitors')">For visitors</button>
+        <button class="tabButton" onclick="openTab('speakers')">For speakers</button>
+    </div>
+    <div class="container">
+        <div class="tab" id="visitors">
+            <h2>Wanna go?</h2>
+            <form action="/v1/visitors" target="dummyframe"  method="POST">
+                <div>
+                    <div>
+                        <label for="email">You can leave your email if you want to receive news and updates (when we implement notifications).</label>
+                    </div>
+                    <div>
+                        <input type="email" id="email" name="email" placeholder="your@mail.com" required>
+                    </div>
+                    <div>
+                        <label for="desired_location">Desired meetup location.</label>
+                    </div>
+                    <div>
+                        <input type="text" id="desired_location" name="desired_location" placeholder="default city" required>
+                    </div>
+                </div>
+                <div>
+                    <input type="submit">
+                </div>
+            </form>
+        </div>
+        <div class="tab" id="speakers" style="display:none">
+            <h2>Let speak from your heart</h2>
+            <form action="/v1/speakers" target="dummyframe" method="POST">
+                <div>
+                    <div>
+                        <label for="contact">Leave your email or other contact if you want to become a speaker.</label>
+                    </div>
+                    <div>
+                        <input type="text" id="contact" name="contact" placeholder="email - your@mail.com" required>
+                    </div>
+                    <div>
+                        <label for="speaker_desired_location">Desired meetup location.</label>
+                    </div>
+                    <div>
+                        <input type="text" id="speaker_desired_location" name="desired_location" placeholder="default city" required>
+                    </div>
+                    <div>
+                        <label for="subject_description">Describe your topic.</label>
+                    </div>
+                    <div>
+                        <textarea id="subject_description" name="subject" cols=60 rows=10 required></textarea>
+                    </div>
+                </div>
+                <div>
+                    <input type="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+    <iframe width="0" height="0" name="dummyframe" id="dummyframe"></iframe>
+</body>
+
+</html>
