@@ -1,0 +1,8 @@
+if [ -d "/data" ]; then
+ echo "remove assets"
+ rm -rf /data
+fi
+if [ -d "/usr/share/meetup" ]; then
+ echo "copy assets"
+ cp -r /usr/share/meetup/data /
+fi

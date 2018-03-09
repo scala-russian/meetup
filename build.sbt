@@ -8,7 +8,8 @@ updateOptions := updateOptions.value.withCachedResolution(true)
 scalacOptions ++= Seq(
   "-target:jvm-1.8",
   "-deprecation",
-  "-encoding", "UTF-8", // yes, this is 2 args
+  "-encoding",
+  "UTF-8", // yes, this is 2 args
   "-language:implicitConversions",
   "-language:postfixOps",
   "-unchecked",
@@ -31,9 +32,9 @@ libraryDependencies ++= Seq(
   "com.typesafe.scala-logging" %% "scala-logging"  % "3.7.2"
 )
 
-enablePlugins(JavaAppPackaging)
-enablePlugins(LinuxPlugin)
-enablePlugins(RpmPlugin)
+enablePlugins(JavaServerAppPackaging)
+//enablePlugins(LinuxPlugin)
+//enablePlugins(RpmPlugin)
 
 mainClass in Compile := Some("center.scala.ru.Meetup")
 
@@ -47,14 +48,23 @@ packageSummary := "Scala meetup landing"
 packageDescription := "https://github.com/scala-russian/meetup"
 fileDescriptorLimit := Some("10240")
 
-mappings in Universal ++= Seq(
-  (resourceDirectory in Compile).value / "logback.xml"       -> "conf/logback.xml",
-  (resourceDirectory in Compile).value / "assets/index.html" -> "assets/index.html"
-)
-linuxPackageMappings in Rpm ++= Seq()
+mappings in Universal ++= {
+  val assetsDir = ((resourceDirectory in Compile).value / "assets").listFiles().toSeq
+  val logback = Seq(
+    (resourceDirectory in Compile).value / "logback.xml" -> "conf/logback.xml"
+  )
+  val html = assetsDir
+    .filter(a => !a.getName.endsWith(".html"))
+    .map(file => file -> ("/data/assets/" + file.getName))
+  val assets = assetsDir
+    .filter(_.getName.endsWith(".html"))
+    .map(file => file -> ("/data/" + file.getName))
+
+  logback ++ html ++ assets
+}
+
 bashScriptExtraDefines ++= Seq(
   """addJava "-Dlogback.configurationFile=file://${app_home}/../conf/logback.xml"""",
-  """addJava "-Dwebassets.index=/${app_home}/../assets/index.html"""",
   """addJava "-XX:+PrintGCDetails"""",
   """addJava "-XX:+PrintGCDateStamps"""",
   """addJava "-XX:+PrintGCTimeStamps"""",
