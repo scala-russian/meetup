@@ -1,9 +1,7 @@
 package center.scala.ru
 
-import java.io.File
-
 import com.twitter.finagle.Http
-import com.twitter.io.{Buf, Reader}
+import com.twitter.io.Buf
 import com.twitter.util.{Await, Try}
 import com.typesafe.scalalogging.StrictLogging
 import io.circe.generic.auto._
@@ -16,7 +14,7 @@ import shapeless._
 
 object Meetup extends StrictLogging {
   def main(args: Array[String]): Unit = {
-    Await.ready(Http.server.serve(":80", API.route.toService))
+    Await.ready(Http.server.serve("127.0.0.1:8080", API.route.toService))
     logger.info("meetup application stopped")
   }
 }
@@ -24,15 +22,6 @@ object Meetup extends StrictLogging {
 object API extends StrictLogging {
 
   val prefix: Endpoint[HNil] = path("v1")
-
-  val file = new File(System.getProperty("webassets.index"))
-  def reader: Reader = Reader.fromFile(file)
-  val index: Endpoint[Buf] = get(/) {
-    Reader
-      .readAll(reader)
-      .map(x => Ok(x))
-      .map(_.withHeader("Content-Type", "text/html; charset=utf-8"))
-  }
 
   val visitors: Endpoint[String] = get("visitors") {
     Ok("hello")
@@ -67,7 +56,5 @@ object API extends StrictLogging {
 
   Stream() #::: Stream()
 
-  val route =
-    index :+:
-      (prefix :: (visitors :+: addVisitor :+: addSpeaker))
+  val route = prefix :: (visitors :+: addVisitor :+: addSpeaker)
 }
