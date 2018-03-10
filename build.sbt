@@ -1,5 +1,5 @@
 name := "meetup"
-version := "1.0.0"
+version := "1.0.1"
 scalaVersion := "2.12.4"
 organization := "center.scala.ru"
 
@@ -33,8 +33,6 @@ libraryDependencies ++= Seq(
 )
 
 enablePlugins(JavaServerAppPackaging)
-//enablePlugins(LinuxPlugin)
-//enablePlugins(RpmPlugin)
 
 mainClass in Compile := Some("center.scala.ru.Meetup")
 
