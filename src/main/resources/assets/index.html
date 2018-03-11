@@ -2,6 +2,114 @@
 
 <head>
     <title>Scala Meetup</title>
+    <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet"> 
+
+    <style type="text/css">
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 400px 1fr;  /* three columns */
+        grid-template-rows: 50px auto; /* two rows  */ 
+   
+    }
+
+    .buttons {
+        grid-column-start: 2;
+        grid-column-end: 3; 
+        align-self: stretch;
+    }
+
+    .container {
+        grid-column-start: 2;
+        grid-column-end:3;
+        align-self: center;
+    }
+
+    .buttons{
+        text-align: center;
+    }
+
+    .ui-form-speakers{
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: 40px 40px 20px 40px 20px auto;
+        grid-row-gap: 10px;
+        text-align: center;
+        grid-template-areas: "email_label"
+                             "email_field"
+                             "location_label"
+                             "location_field"
+                             "sumbit_visitor"
+                             "describe_topic"
+    }
+
+    .ui-form-visitors{
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: 40px 40px 20px 30px;
+        grid-row-gap: 10px;
+        text-align: center;
+        grid-template-areas: "email_label"
+                             "email_field"
+                             "location_label"
+                             "location_field"                    
+    }
+
+    .tab{
+        text-align: center;
+        font-family: 'Fira Sans', sans-serif;
+        font-size: 15px;
+    }
+
+    .email-label{
+        grid-area: "email_label";
+        text-align: center;
+    }
+    .email-field{
+        grid-area: "email_field";
+    }
+
+    .location-label{
+        grid-area: "location_label";
+    }
+
+    .location-field{
+        grid-area: "location_field";
+    }
+
+    .subject-description-label{
+        grid-area: "sumbit_visitor";
+    }
+
+    .subject-description-textarea{
+        grid-area: "describe_topic";
+    }
+
+    .sumbit-speaker{
+        grid-area: "sumbit_speaker";
+    }
+
+.element::-webkit-input-placeholder {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 15px;
+}
+
+.element::-moz-placeholder {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 15px;
+}
+
+.element:-ms-input-placeholder {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 15px;
+} 
+
+
+.element:-o-input-placeholder {
+    font-family: 'Fira Sans', sans-serif;
+    font-size: 15px;
+} 
+
+    </style>    
     <style type="text/css">
         .tabButton {
             -moz-box-shadow: inset 0 1px 0 0 #f29c93;
@@ -22,14 +130,13 @@
             display: inline-block;
             cursor: pointer;
             color: #ffffff;
-            font-family: Arial,serif;
+            font-family: 'Fira Sans', sans-serif;
             font-size: 15px;
             font-weight: bold;
             padding: 6px 24px;
             text-decoration: none;
             text-shadow: 0 1px 0 #b23e35;
         }
-
         .tabButton:hover {
             background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #ce0100), color-stop(1, #fe1a00));
             background: -moz-linear-gradient(top, #ce0100 5%, #fe1a00 100%);
@@ -40,7 +147,6 @@
             filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ce0100', endColorstr='#fe1a00', GradientType=0);
             background-color: #ce0100;
         }
-
         .tabButton:active {
             position: relative;
             top: 1px;
@@ -59,29 +165,30 @@
 </head>
 
 <body>
-    <div>
-        <button class="tabButton" onclick="openTab('visitors')">For visitors</button>
-        <button class="tabButton" onclick="openTab('speakers')">For speakers</button>
+    <div class="grid-container">
+    <div class="buttons">
+        <button class="tabButton" id="vis" onclick="openTab('visitors')">For visitors</button>
+        <button class="tabButton" id="speak" onclick="openTab('speakers')">For speakers</button>
     </div>
     <div class="container">
         <div class="tab" id="visitors">
             <h2>Wanna go?</h2>
             <form action="/api/v1/visitors" target="dummyframe"  method="POST">
-                <div>
+                <div class="ui-form-visitors">
                     <div>
                         <label for="email">You can leave your email if you want to receive news and updates (when we implement notifications).</label>
                     </div>
-                    <div>
+                    <div class="email-field">
                         <input type="email" id="email" name="email" placeholder="your@mail.com" required>
                     </div>
-                    <div>
+                    <div class="location-label">
                         <label for="desired_location">Desired meetup location.</label>
                     </div>
-                    <div>
+                    <div class="location-field">
                         <input type="text" id="desired_location" name="desired_location" placeholder="default city" required>
                     </div>
                 </div>
-                <div>
+                <div class="sumbit-updates">
                     <input type="submit">
                 </div>
             </form>
@@ -89,31 +196,32 @@
         <div class="tab" id="speakers" style="display:none">
             <h2>Let speak from your heart</h2>
             <form action="/api/v1/speakers" target="dummyframe" method="POST">
-                <div>
+                <div class="ui-form-speakers">
                     <div>
                         <label for="contact">Leave your email or other contact if you want to become a speaker.</label>
                     </div>
-                    <div>
+                    <div class="email-field">
                         <input type="text" id="contact" name="contact" placeholder="email - your@mail.com" required>
                     </div>
-                    <div>
+                    <div class="location-label">
                         <label for="speaker_desired_location">Desired meetup location.</label>
                     </div>
-                    <div>
+                    <div class="location-field">
                         <input type="text" id="speaker_desired_location" name="desired_location" placeholder="default city" required>
                     </div>
-                    <div>
+                    <div class="subject-description-label">
                         <label for="subject_description">Describe your topic.</label>
                     </div>
-                    <div>
-                        <textarea id="subject_description" name="subject" cols=60 rows=10 required></textarea>
+                    <div class="subject-description-textarea">
+                        <textarea id="subject_description" name="subject" cols=40 rows=10 required></textarea>
                     </div>
                 </div>
-                <div>
+                <div class="sumbit-speaker">
                     <input type="submit">
                 </div>
             </form>
         </div>
+    </div>
     </div>
     <iframe width="0" height="0" name="dummyframe" id="dummyframe"></iframe>
 </body>
